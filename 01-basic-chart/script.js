@@ -12,6 +12,10 @@ const options = {
         {
             'name':'sightings',
             'data': [10, 13, 15, 22, 24, 28]
+        },
+        {
+            'name':'temperature',
+            'data':[31, 32, 27, 29, 28, 31]
         }
     ],
     xaxis:{
