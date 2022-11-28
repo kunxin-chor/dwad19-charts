@@ -44,4 +44,48 @@ function transformData(data){
         }
     }
     console.log("shortlisted=", shortlisted)
+
+    const shortlisted = earningsMap.filter(function(dataPoint){
+            if (dataPoint.date.getFullYear() == 2020){
+                return true;
+            } else {
+                return false;
+            }
+        })
+        console.log("shortlisted=",shortlisted)
+    })
+
+    // GROUPING
+    // We use an object with the keys representing the month numbers
+    // each key in the object store an array, so we going to put all the 
+    // transactions in teh same month into the array for that month
+    const months = {
+        "0": [],
+        "1": [],
+        "2": [],
+        "3": [],
+        "4": [],
+        "5": [],
+        "6": [],
+        "7": [],
+        "8": [],
+        "9": [],
+        "10": [],
+        "11": []
+    }
+    // grouping
+    for (let dataPoint of shortlisted) {
+        const monthIndex = dataPoint.date.getMonth();
+        month[monthIndex].push( dataPoint );
+    }
+    console.log(months);
+
+    const series = []
+    // to go through an object one key at a time, use for... in
+    // for...of only works with array
+    for (let monthKey in months){
+        let dataPoints = months[monthKey];
+    }
+
+
 }

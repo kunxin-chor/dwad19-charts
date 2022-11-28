@@ -1,3 +1,5 @@
+const monthLabels =["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug","Sept","Oct","Nov","Dec"];
+
 async function loadData(url) {
     const response = await axios.get(url);
     return response.data;
@@ -32,12 +34,62 @@ function transformData(data) {
     // FILTERING
     // Only keeping data points (or elements) that meets
     // a certain critera.
-    const shortlisted = [];
-    for (let dataPoint of earnings) {
+    // const shortlisted = [];
+    // for (let dataPoint of earnings) {
+    //     if (dataPoint.date.getFullYear() == 2020) {
+    //         shortlisted.push(dataPoint);
+    //     }
+    // }
+    // console.log("shortlisted=", shortlisted);
+    const shortlisted = earnings.filter(function(dataPoint){
         if (dataPoint.date.getFullYear() == 2020) {
-            shortlisted.push(dataPoint);
+            return true;
+        } else {
+            return false;
         }
+    })
+    console.log(shortlisted);
+    // GROUPING
+    // We use an object with the keys representing the month numbers
+    // each key  in the object store an array, so we going put all the transactons in the same
+    // month into the array for that month
+    const months = {
+        "0": [],
+        "1": [],
+        "2": [],
+        "3": [],
+        "4": [],
+        "5": [],
+        "6": [],
+        "7": [],
+        "8": [],
+        "9": [],
+        "10": [],
+        "11": [],
     }
-    console.log("shortlisted=", shortlisted);
 
+    for (let dataPoint of shortlisted) {
+        const monthIndex = dataPoint.date.getMonth();
+        months[monthIndex].push(dataPoint);
+    }
+
+    const series = [];
+    // to go through an object one key at a time, use `for ... in`
+
+    // the outer for loop go through one month at a time
+    for (let monthKey in months) {
+        const dataPoints = months[monthKey];
+        let total = 0;
+        // the inner for loop calculate the total of all the amount for one month (depending on the value of monthKey)
+        for (let d of dataPoints) {
+            total = total + d.amount;
+        }
+        series.push({
+            x: monthLabels[monthKey],
+            y: total/100
+        })
+    }
+
+    console.log(series);
+    return series;
 }
